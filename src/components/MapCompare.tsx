@@ -19,9 +19,18 @@ const MapCompare = () => {
 
   const mapStyle: React.CSSProperties = { position: 'absolute', top: 0, bottom: 0, width: '100%' }
 
+  // These values should be adjusted based on the actual bounds of your tileset
+  const tilesetBounds: [mapboxgl.LngLatLike, mapboxgl.LngLatLike] = [
+    [30.385, -0.996], // Southwest coordinates
+    [30.389, -0.992]  // Northeast coordinates
+  ]
+
   const initialView = {
-    center: [30.387386, -0.994369] as [number, number],
-    zoom: 18,
+    center: [
+      ((tilesetBounds[0] as [number, number])[0] + (tilesetBounds[1] as [number, number])[0]) / 2,
+      ((tilesetBounds[0] as [number, number])[1] + (tilesetBounds[1] as [number, number])[1]) / 2
+    ] as [number, number],
+    zoom: 20,
     pitch: 0,
     bearing: 0
   }
@@ -33,16 +42,24 @@ const MapCompare = () => {
 
     const beforeMap = new mapboxgl.Map({
       container: beforeMapContainerRef.current!,
-      style: 'mapbox://styles/mapbox/standard-satellite',
+      style: {
+        version: 8,
+        sources: {},
+        layers: []
+      },
       ...initialView,
-      maxBounds: [30.38,-1,30.39,-0.99],
+      maxBounds: [(tilesetBounds[0] as [number, number])[0], (tilesetBounds[0] as [number, number])[1], (tilesetBounds[1] as [number, number])[0], (tilesetBounds[1] as [number, number])[1]] as [number, number, number, number],
     })
 
     const afterMap = new mapboxgl.Map({
       container: afterMapContainerRef.current!,
-      style: 'mapbox://styles/mapbox/standard-satellite',
+      style: {
+        version: 8,
+        sources: {},
+        layers: []
+      },
       ...initialView,
-      maxBounds: [30.38,-1,30.39,-0.99],
+      maxBounds: tilesetBounds,
     })
 
     beforeMap.on('load', () => {
