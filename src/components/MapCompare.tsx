@@ -36,9 +36,9 @@ const MapCompare = () => {
   }
 
   useEffect(() => {
-    if (mapRef.current) return
+    if (typeof window === 'undefined' || mapRef.current) return
 
-    mapboxgl.accessToken = 'pk.eyJ1Ijoiam9obnBldGVybnV3YWdhYmEiLCJhIjoiY20zNXQ2cTFxMGJzMDJrcjJ5aGp0bnB4eCJ9.wwYHGrJ4KR2jOXHJqrGSmA'
+    mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || '';
 
     const beforeMap = new mapboxgl.Map({
       container: beforeMapContainerRef.current!,
@@ -105,13 +105,19 @@ const MapCompare = () => {
     afterMap.on('rotate', updateCompassBearing)
 
     return () => {
-      beforeMap.remove()
-      afterMap.remove()
+      if (beforeMap) {
+        beforeMap.off('rotate', updateCompassBearing);
+        beforeMap.remove();
+      }
+      if (afterMap) {
+        afterMap.off('rotate', updateCompassBearing);
+        afterMap.remove();
+      }
     }
-  }, [])
+  }, [initialView, tilesetBounds])
 
   useEffect(() => {
-    if (!mapRef.current) return;
+    if (typeof window === 'undefined' || !mapRef.current) return;
 
     const { beforeMap, afterMap } = mapRef.current;
 
@@ -124,10 +130,10 @@ const MapCompare = () => {
     afterMap.on('pitch', updateViewState);
 
     return () => {
-      beforeMap.off('pitch', updateViewState);
-      afterMap.off('pitch', updateViewState);
+      if (beforeMap) beforeMap.off('pitch', updateViewState);
+      if (afterMap) afterMap.off('pitch', updateViewState);
     };
-  }, []);
+  }, [initialView, tilesetBounds]);
 
   const toggle3D = () => {
     if (mapRef.current) {
