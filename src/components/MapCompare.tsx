@@ -20,15 +20,15 @@ const MapCompare = () => {
   const mapStyle: React.CSSProperties = { position: 'absolute', top: 0, bottom: 0, width: '100%' }
 
   // These values should be adjusted based on the actual bounds of your tileset
-  const tilesetBounds: [mapboxgl.LngLatLike, mapboxgl.LngLatLike] = [
+  const tilesetBounds: [[number, number], [number, number]] = [
     [30.385, -0.996], // Southwest coordinates
     [30.389, -0.992]  // Northeast coordinates
   ]
 
   const initialView = {
     center: [
-      ((tilesetBounds[0] as [number, number])[0] + (tilesetBounds[1] as [number, number])[0]) / 2,
-      ((tilesetBounds[0] as [number, number])[1] + (tilesetBounds[1] as [number, number])[1]) / 2
+      (tilesetBounds[0][0] + tilesetBounds[1][0]) / 2,
+      (tilesetBounds[0][1] + tilesetBounds[1][1]) / 2
     ] as [number, number],
     zoom: 20,
     pitch: 0,
@@ -36,9 +36,9 @@ const MapCompare = () => {
   }
 
   useEffect(() => {
-    if (typeof window === 'undefined' || mapRef.current) return
+    if (mapRef.current) return
 
-    mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || '';
+    mapboxgl.accessToken = 'pk.eyJ1Ijoiam9obnBldGVybnV3YWdhYmEiLCJhIjoiY20zNXQ2cTFxMGJzMDJrcjJ5aGp0bnB4eCJ9.wwYHGrJ4KR2jOXHJqrGSmA'
 
     const beforeMap = new mapboxgl.Map({
       container: beforeMapContainerRef.current!,
@@ -48,7 +48,7 @@ const MapCompare = () => {
         layers: []
       },
       ...initialView,
-      maxBounds: [(tilesetBounds[0] as [number, number])[0], (tilesetBounds[0] as [number, number])[1], (tilesetBounds[1] as [number, number])[0], (tilesetBounds[1] as [number, number])[1]] as [number, number, number, number],
+      maxBounds: tilesetBounds,
     })
 
     const afterMap = new mapboxgl.Map({
@@ -105,19 +105,13 @@ const MapCompare = () => {
     afterMap.on('rotate', updateCompassBearing)
 
     return () => {
-      if (beforeMap) {
-        beforeMap.off('rotate', updateCompassBearing);
-        beforeMap.remove();
-      }
-      if (afterMap) {
-        afterMap.off('rotate', updateCompassBearing);
-        afterMap.remove();
-      }
+      beforeMap.remove()
+      afterMap.remove()
     }
-  }, [initialView, tilesetBounds])
+  }, [])
 
   useEffect(() => {
-    if (typeof window === 'undefined' || !mapRef.current) return;
+    if (!mapRef.current) return;
 
     const { beforeMap, afterMap } = mapRef.current;
 
@@ -130,10 +124,10 @@ const MapCompare = () => {
     afterMap.on('pitch', updateViewState);
 
     return () => {
-      if (beforeMap) beforeMap.off('pitch', updateViewState);
-      if (afterMap) afterMap.off('pitch', updateViewState);
+      beforeMap.off('pitch', updateViewState);
+      afterMap.off('pitch', updateViewState);
     };
-  }, [initialView, tilesetBounds]);
+  }, []);
 
   const toggle3D = () => {
     if (mapRef.current) {
