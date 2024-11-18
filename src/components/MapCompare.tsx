@@ -19,10 +19,9 @@ const MapCompare = () => {
 
   const mapStyle: React.CSSProperties = { position: 'absolute', top: 0, bottom: 0, width: '100%' }
 
-  // These values should be adjusted based on the actual bounds of your tileset
   const tilesetBounds: [[number, number], [number, number]] = [
-    [30.385, -0.996], // Southwest coordinates
-    [30.389, -0.992]  // Northeast coordinates
+    [30.385, -0.996],
+    [30.389, -0.992]
   ]
 
   const initialView = {
@@ -36,7 +35,7 @@ const MapCompare = () => {
   }
 
   useEffect(() => {
-    if (mapRef.current) return
+    if (typeof window === 'undefined' || mapRef.current) return
 
     mapboxgl.accessToken = 'pk.eyJ1Ijoiam9obnBldGVybnV3YWdhYmEiLCJhIjoiY20zNXQ2cTFxMGJzMDJrcjJ5aGp0bnB4eCJ9.wwYHGrJ4KR2jOXHJqrGSmA'
 
@@ -147,7 +146,6 @@ const MapCompare = () => {
       afterMap.easeTo({ ...initialView, duration: 1000 });
       setIs3D(false);
       
-      // Reset the swiper position to the middle
       compareRef.current.setSlider(comparisonContainerRef.current!.clientWidth / 2);
     }
   };
