@@ -37,7 +37,7 @@ const MapCompare = () => {
   useEffect(() => {
     if (typeof window === 'undefined' || mapRef.current) return
 
-    mapboxgl.accessToken = 'pk.eyJ1Ijoiam9obnBldGVybnV3YWdhYmEiLCJhIjoiY20zNXQ2cTFxMGJzMDJrcjJ5aGp0bnB4eCJ9.wwYHGrJ4KR2jOXHJqrGSmA'
+    mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || ''
 
     const beforeMap = new mapboxgl.Map({
       container: beforeMapContainerRef.current!,
@@ -64,7 +64,7 @@ const MapCompare = () => {
     beforeMap.on('load', () => {
       beforeMap.addSource('before-image', {
         type: 'raster',
-        url: 'mapbox://johnpeternuwagaba.8yjcd0p6'
+        url: process.env.NEXT_PUBLIC_BEFORE_IMAGE_URL
       })
 
       beforeMap.addLayer({
@@ -78,7 +78,7 @@ const MapCompare = () => {
     afterMap.on('load', () => {
       afterMap.addSource('after-image', {
         type: 'raster',
-        url: 'mapbox://johnpeternuwagaba.59sh9dld'
+        url: process.env.NEXT_PUBLIC_AFTER_IMAGE_URL
       })
 
       afterMap.addLayer({
