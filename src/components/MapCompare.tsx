@@ -19,16 +19,16 @@ const MapCompare = () => {
 
   const mapStyle: React.CSSProperties = { position: 'absolute', top: 0, bottom: 0, width: '100%' }
 
-  const tilesetBounds = [
-    [30.381805555555555, -0.9966667], // Southwest coordinates
-    [30.389222222222223, -0.9916944]  // Northeast coordinates
-  ]
+  const tilesetBounds: [number, number, number, number] = [
+    30.381805555555555, -0.9966667, // Southwest coordinates
+    30.389222222222223, -0.9916944  // Northeast coordinates
+  ];
 
   const initialView = {
     center: [
       30.386694444444444,
       -0.9947222
-    ],
+    ] as [number, number],
     zoom: 18,
     pitch: 0,
     bearing: 0
@@ -37,7 +37,7 @@ const MapCompare = () => {
   useEffect(() => {
     if (typeof window === 'undefined' || mapRef.current) return
 
-    mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || ''
+    mapboxgl.accessToken = 'pk.eyJ1Ijoiam9obnBldGVybnV3YWdhYmEiLCJhIjoiY20zNXQ2cTFxMGJzMDJrcjJ5aGp0bnB4eCJ9.wwYHGrJ4KR2jOXHJqrGSmA'
 
     const beforeMap = new mapboxgl.Map({
       container: beforeMapContainerRef.current!,
@@ -64,7 +64,7 @@ const MapCompare = () => {
     beforeMap.on('load', () => {
       beforeMap.addSource('before-image', {
         type: 'raster',
-        url: process.env.NEXT_PUBLIC_BEFORE_IMAGE_URL
+        url: 'mapbox://johnpeternuwagaba.8yjcd0p6'
       })
 
       beforeMap.addLayer({
@@ -78,7 +78,7 @@ const MapCompare = () => {
     afterMap.on('load', () => {
       afterMap.addSource('after-image', {
         type: 'raster',
-        url: process.env.NEXT_PUBLIC_AFTER_IMAGE_URL
+        url: 'mapbox://johnpeternuwagaba.59sh9dld'
       })
 
       afterMap.addLayer({

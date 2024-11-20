@@ -9,7 +9,7 @@ const MapCompare = dynamic(() => import("../components/MapCompare"), {
 export default function Home() {
   return (
     <>
-     <MapCompare />
+      <MapCompare />
     </>
   );
 }
