@@ -19,7 +19,7 @@ const MapCompare = () => {
 
   const mapStyle: React.CSSProperties = { position: 'absolute', top: 0, bottom: 0, width: '100%' }
 
-  const tilesetBounds: [[number, number], [number, number]] = [
+  const tilesetBounds = [
     [30.381805555555555, -0.9966667], // Southwest coordinates
     [30.389222222222223, -0.9916944]  // Northeast coordinates
   ]
