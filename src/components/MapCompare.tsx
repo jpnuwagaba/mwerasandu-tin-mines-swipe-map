@@ -11,7 +11,6 @@ import {
   RefreshCw,
   ArrowUp,
   Play,
-  ChevronsLeftRightEllipsis,
   ArrowRightLeft,
   History,
 } from "lucide-react";
