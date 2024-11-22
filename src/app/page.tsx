@@ -13,3 +13,15 @@ export default function Home() {
     </>
   );
 }
+
+// "use client";
+
+// import MapCompare from "@/components/MapCompare";
+
+// export default function Home() {
+//   return (
+//     <>
+//      <MapCompare />
+//     </>
+//   );
+// }
